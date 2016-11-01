@@ -43,7 +43,7 @@ def s_events(config, N):
     logger.debug("s.shape: {0}".format(s.shape))
     return s
 
-if __name__ == '__main__':
+def cli():
     logging.basicConfig(level=logging.WARN)
 
     parser = argparse.ArgumentParser(description="a utility to convert the raw data from the NIRx machine to a .nirs format that can be used by HOMER2")
@@ -99,3 +99,6 @@ if __name__ == '__main__':
     savemat(outfile, { 'd': d, 's': s, 't': t, 'aux': aux, 'SD': SD }, appendmat=False)
     if args.verbose:
         print("wrote matfile to {0}".format(outfile))
+
+if __name__ == '__main__':
+    cli()

@@ -10,7 +10,11 @@ setup(
     version='0.9',
     description='Utilities for working with NIRS data',
     packages=[ 'pyNIRS' ],
-    scripts = [ 'bin/nirx2nirs.py' ],
+    entry_points={
+        'console_scripts': [
+            'nirx2nirs = pyNIRS.data_conversion.nirx2nirs:cli',
+        ]
+    },
     keywords = "NIRS nuroimaging",
     url = "https://github.com/hazybluedot/pyNIRS",
     install_requires = [ 'numpy', 'scipy' ]
