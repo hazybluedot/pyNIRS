@@ -19,8 +19,11 @@ This package uses both [numpy] and [scipy]
 ## Installation
 
 ~~~~
+$ pip install .
 $ python setup.py install
 ~~~~
+
+Note that the `pip` command is a work-around for an issue with the interaction of setuptools, scipy and numpy
 
 ## Usage
 

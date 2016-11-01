@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#! python
 
 # convert NIRx data to .nirs for use with HOMER2
 
