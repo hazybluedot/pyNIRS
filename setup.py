@@ -11,5 +11,7 @@ setup(
     description='Utilities for working with NIRS data',
     packages=[ 'pyNIRS' ],
     scripts = [ 'bin/nirx2nirs.py' ],
+    keywords = "NIRS nuroimaging",
+    url = "https://github.com/hazybluedot/pyNIRS",
     install_requires = [ 'numpy', 'scipy' ]
 )
