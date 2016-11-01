@@ -38,3 +38,5 @@ For more detailed usage instruction
 ~~~~
 $ nirx2nirs -h
 ~~~~
+
+Note that on windows the setup step should create a `.exe` file in your path. You may have to include that extension when running commands from the commmand line. I have not tested on Windows yet.
