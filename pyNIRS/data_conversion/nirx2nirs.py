@@ -14,6 +14,34 @@ from pyNIRS.config import Config
 
 logger = logging.getLogger(__name__)
 
+def decode_SDtpl(val):
+    try:
+        iSrc, _zero, iDet = [ int(i) for i in str(int(val)) ]
+    except ValueError:
+        iSrc, iDet = None, None
+    return iSrc, iDet
+
+def SDpos(SD, config):
+    tpl = config.load_by_ext('tpl')
+    M, N = tpl.shape
+    logger.debug('tpl shape: ({0}, {1})'.format(M, N))
+    dChan = config.get('ChannelsDistance', 'ChanDis')
+    xd, yd = dChan[0], dChan[1] # TODO: are these really always going to be the same? distance from what?
+    nSrcs, nDets = SD['nSrcs'], SD['nDets']
+    SD['SrcPos'] = np.zeros( (nSrcs, 3) ) 
+    SD['DetPos'] = np.zeros( (nDets, 3) ) 
+
+    zIdx = (N-1)/2
+    for (i,j) in product(range(M), range(N)):
+        iSrc, iDet = decode_SDtpl(tpl[i,j])
+        if iSrc is not None and iDet is not None:
+            logger.debug('Position for Src,Det {0} at {1}'.format((iSrc, iDet), (i,j)))
+            xpos, ypos = (j - zIdx)*xd, (i+1)*yd
+            SD['SrcPos'][iSrc - 1, :] = [ xpos, ypos, 0 ]
+            SD['DetPos'][iDet - 1, :] = [ xpos, ypos, 0 ]
+
+    return SD
+
 def SDmeasList(config):
     nWavelengths = len(config.wavelengths)
     SDMask = config.get('DataStructure', 'S-D-Mask')
@@ -51,18 +79,23 @@ def cli():
     parser.add_argument("config", type=Config, help="Config file (usually with extension .hdr) from the NIRx data directory")
     parser.add_argument("-v", "--verbose", action='store_true', help="Show informative output")
     parser.add_argument("-o", "--output", help="Output location or file. Defaults to a .nirs file in the same directory the config file was loaded from. Existing files with the same name will be overwritten.")
+    parser.add_argument("-u", "--units", default='mm', choices=['mm', 'cm'], help='Spatial units for source-detector positions. Defaults to mm')
     
     args = parser.parse_args()
     config = args.config
     
     iparams = config.section('ImagingParameters')
-    
+
     SD = {
         'Lambda': iparams('Wavelengths'),
         'nSrcs': iparams('Sources'),
         'nDets': iparams('Detectors'),
-        'MeasList': SDmeasList(config)
+        'MeasList': SDmeasList(config),
+        'SpatialUnit': args.units # don't see this anywhere in raw data, is it always 'mm' for NIRx?
     }
+    SDpos(SD, config)
+    
+    logger.debug('SD = {0}'.format(SD))
     
     # load wavelength files
     wl_data = config.wl_data
@@ -101,4 +134,6 @@ def cli():
         print("wrote matfile to {0}".format(outfile))
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+
     cli()

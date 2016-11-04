@@ -93,6 +93,21 @@ class DataLoader(object):
             
         return self.data
 
+class Event(object):
+    def __init__(self, etuple):
+        self.etuple = etuple
+
+    @property
+    def time(self):
+        return self.etuple[0]
+
+    @property
+    def type(self):
+        return self.etuple[0]
+
+    @property
+    def index(self):
+        return self.etuple[2]
     
 class Config(object):
     def __init__(self, fname):
@@ -128,9 +143,12 @@ class Config(object):
     def file_ext(self, ext):
         return os.path.join(self.basedir, '{0}.{1}'.format(self.get('GeneralInfo', 'FileName'), ext))
 
+    def load_by_ext(self, ext):
+        return np.genfromtxt(self.file_ext(ext))
+        
     def _load_wldata(self):
         nWavelengths = len(self.wavelengths)
-        return tuple([ np.genfromtxt(self.file_ext(e))[:,self.goodSDIdxs] for e in [ 'wl{0}'.format(i+1) for i in range(nWavelengths) ] ])
+        return tuple([ self.load_by_ext(e)[:,self.goodSDIdxs] for e in [ 'wl{0}'.format(i+1) for i in range(nWavelengths) ] ])
         
     @property
     def wl_data(self):
