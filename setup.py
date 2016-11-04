@@ -9,10 +9,10 @@ setup(
     author_email='dmaczka@vt.edu',
     version='0.9',
     description='Utilities for working with NIRS data',
-    packages=[ 'pyNIRS' ],
+    packages=[ 'pyNIRS', 'pyNIRS.data_conversion' ],
     entry_points={
         'console_scripts': [
-            'nirx2nirs = pyNIRS.nirx2nirs:cli',
+            'nirx2nirs = pyNIRS.data_conversion.nirx2nirs:cli',
         ]
     },
     keywords = "NIRS nuroimaging",
