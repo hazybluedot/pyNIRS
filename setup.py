@@ -12,7 +12,7 @@ setup(
     packages=[ 'pyNIRS' ],
     entry_points={
         'console_scripts': [
-            'nirx2nirs = pyNIRS.data_conversion.nirx2nirs:cli',
+            'nirx2nirs = pyNIRS.nirx2nirs:cli',
         ]
     },
     keywords = "NIRS nuroimaging",
