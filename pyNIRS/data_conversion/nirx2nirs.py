@@ -1,5 +1,3 @@
-#! python
-
 # convert NIRx data to .nirs for use with HOMER2
 
 import argparse
