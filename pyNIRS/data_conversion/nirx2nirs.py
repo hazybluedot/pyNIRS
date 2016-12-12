@@ -22,9 +22,13 @@ def decode_SDtpl(val):
     return iSrc, iDet
 
 def SDpos(SD, config):
+    """Generate source-detector position data. Warning: it has been
+confirmed that this algorithm is *not* correct. Do not use position
+information in analysis until this has been fixed."""
     tpl = config.load_by_ext('tpl')
     M, N = tpl.shape
     logger.debug('tpl shape: ({0}, {1})'.format(M, N))
+    logger.warn('Position data is not correct. Do not use position data for analysis!')
     dChan = config.get('ChannelsDistance', 'ChanDis')
     xd, yd = dChan[0], dChan[1] # TODO: are these really always going to be the same? distance from what?
     nSrcs, nDets = SD['nSrcs'], SD['nDets']
