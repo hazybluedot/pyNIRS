@@ -1,5 +1,3 @@
-#! python
-
 # convert NIRx data to .nirs for use with HOMER2
 
 import argparse
@@ -76,8 +74,6 @@ def s_events(config, N):
     return s
 
 def cli():
-    logging.basicConfig(level=logging.WARN)
-
     parser = argparse.ArgumentParser(description="a utility to convert the raw data from the NIRx machine to a .nirs format that can be used by HOMER2")
     
     parser.add_argument("config", type=Config, help="Config file (usually with extension .hdr) from the NIRx data directory")
